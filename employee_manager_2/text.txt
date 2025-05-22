@@ -1,0 +1,7 @@
+npx typeorm migration:create db/migrations/create-employee
+
+npx typeorm migration:run -d dist/db/data-source.js
+
+npx typeorm migration:revert -d dist/db/data-source.js
+
+npx typeorm migration:generate -d dist/db/data-source.js db/migrations/create-employee

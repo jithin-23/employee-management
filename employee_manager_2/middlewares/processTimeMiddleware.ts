@@ -1,3 +1,5 @@
+import { NextFunction, Request, Response } from "express";
+
 export const processTimeMiddleware = (req, res, next) => {
   const startTime = Date.now(); // for simplicity
   const end = res.end;

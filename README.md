@@ -1,2 +1,13 @@
 # employee-management
 KV Training Node JS
+
+npm init --y
+
+npm tsc --init
+
+npm run <script-name>
+
+npx tsc
+
+node dist/app.js
+
