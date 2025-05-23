@@ -7,6 +7,7 @@ import errorMiddleware from "./middlewares/errorMiddleware";
 import authRouter from "./routes/auth.routes";
 import authMiddleware from "./middlewares/authMiddleware";
 import { LoggerService } from "./services/logger.service";
+import departmentRouter from "./routes/department.routes";
 
 const { Client } = require("pg");
 
@@ -18,6 +19,7 @@ server.use(loggerMiddleware);
 server.use(processTimeMiddleware);
 
 server.use("/auth", authRouter);
+server.use("/department", departmentRouter);
 server.use("/employee", authMiddleware, employeeRouter);
 
 server.use(errorMiddleware);

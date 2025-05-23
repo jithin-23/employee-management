@@ -17,6 +17,7 @@ employeeRouter.post("/",authorizationMiddleware, employeeController.createEmploy
 employeeRouter.get("/", employeeController.getAllEmployees .bind(employeeController));
 employeeRouter.get("/:id",employeeController.getEmployeeById .bind(employeeController));
 employeeRouter.put("/:id",employeeController.updateEmployee .bind(employeeController));
+employeeRouter.patch("/:id",employeeController.updateEmployee .bind(employeeController));
 employeeRouter.delete("/:id",employeeController.deleteEmployee .bind(employeeController));
 
 export default employeeRouter;

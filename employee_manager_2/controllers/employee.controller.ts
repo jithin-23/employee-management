@@ -5,7 +5,8 @@ import { isEmail } from "../validators/emailValidator";
 import { CreateAddressDto } from "../dto/create-address.dto";
 import { validate } from "class-validator";
 import { plainToInstance } from "class-transformer";
-import { CreateEmployeeDto } from "../dto/create-employee.dto";
+import { CreateEmployeeDto, } from "../dto/create-employee.dto";
+import { UpdateEmployeeDto} from "../dto/update-employee.dto"
 
 class EmployeeController {
     constructor(private employeeService: EmployeeServices) {}
@@ -64,15 +65,17 @@ class EmployeeController {
             if (!employee) {
                 throw new HttpException(404, "Employee Not Found");
             }
-            const createEmployeeDto = plainToInstance(
-                CreateEmployeeDto,
+            const updateEmployeeDto = plainToInstance(
+                UpdateEmployeeDto,
                 req.body
             );
             await this.employeeService.updateEmployee(
                 id,
-                createEmployeeDto.email,
-                createEmployeeDto.name,
-                createEmployeeDto.age
+                updateEmployeeDto.email,
+                updateEmployeeDto.name,
+                updateEmployeeDto.age,
+                updateEmployeeDto.role,
+                updateEmployeeDto.address
             );
             res.status(200).send();
         } catch (err) {
