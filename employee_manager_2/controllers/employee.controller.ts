@@ -2,11 +2,10 @@ import HttpException from "../exception/httpException";
 import EmployeeServices from "../services/employee.services";
 import { NextFunction, Request, Response } from "express";
 import { isEmail } from "../validators/emailValidator";
-import { CreateAddressDto } from "../dto/create-address.dto";
 import { validate } from "class-validator";
 import { plainToInstance } from "class-transformer";
-import { CreateEmployeeDto, } from "../dto/create-employee.dto";
-import { UpdateEmployeeDto} from "../dto/update-employee.dto"
+import { CreateEmployeeDto } from "../dto/create-employee.dto";
+import { UpdateEmployeeDto } from "../dto/update-employee.dto";
 
 class EmployeeController {
     constructor(private employeeService: EmployeeServices) {}
@@ -17,19 +16,13 @@ class EmployeeController {
                 CreateEmployeeDto,
                 req.body
             );
-            console.log(createEmployeeDto);
             const errors = await validate(createEmployeeDto);
             if (errors.length > 0) {
                 console.log(JSON.stringify(errors));
                 throw new HttpException(400, JSON.stringify(errors));
             }
             const savedEmployee = await this.employeeService.createEmployee(
-                createEmployeeDto.email,
-                createEmployeeDto.name,
-                createEmployeeDto.age,
-                createEmployeeDto.password,
-                createEmployeeDto.address,
-                createEmployeeDto.role
+                createEmployeeDto
             );
             res.status(201).send(savedEmployee);
         } catch (error) {
@@ -69,14 +62,7 @@ class EmployeeController {
                 UpdateEmployeeDto,
                 req.body
             );
-            await this.employeeService.updateEmployee(
-                id,
-                updateEmployeeDto.email,
-                updateEmployeeDto.name,
-                updateEmployeeDto.age,
-                updateEmployeeDto.role,
-                updateEmployeeDto.address
-            );
+            await this.employeeService.updateEmployee(id, updateEmployeeDto);
             res.status(200).send();
         } catch (err) {
             console.log(err);
@@ -84,10 +70,15 @@ class EmployeeController {
         }
     }
 
-    async deleteEmployee(req: Request, res: Response) {
-        const id = Number(req.params.id);
-        await this.employeeService.deleteEmployee(id);
-        res.status(204).send();
+    async deleteEmployee(req: Request, res: Response, next:NextFunction) {
+        try {
+            const id = Number(req.params.id);
+            await this.employeeService.deleteEmployee(id);
+            res.status(204).send();
+        } catch(err) {
+            console.log(err);
+            next(err);
+        }
     }
 }
 

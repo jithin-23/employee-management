@@ -10,6 +10,12 @@ class Address extends AbstractEntity {
     line1:string;
 
     @Column()
+    line2:string;
+
+    @Column()
+    houseNo:string;
+
+    @Column()
     pincode:number;
 
     @OneToOne( () => Employee, (employee) => employee.address, {

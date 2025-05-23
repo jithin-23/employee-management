@@ -2,8 +2,10 @@ import AuthService from "../services/auth.services";
 import { Router } from "express";
 import { Request, Response, NextFunction } from "express";
 import HttpException from "../exception/httpException";
+import { LoggerService } from "../services/logger.service";
 
 class AuthController {
+    private logger = LoggerService.getInstance(AuthController.name);
     constructor(private authService: AuthService, private router: Router) {
         router.post("/login", this.login.bind(this));
     }
@@ -18,7 +20,7 @@ class AuthController {
 
             res.status(200).send(data);
         } catch (err) {
-            console.log(err);
+            this.logger.error(err);
             next(err);
         }
     }

@@ -8,6 +8,7 @@ import { LoggerService } from "../services/logger.service";
 import { UpdateDepartmentDto } from "../dto/update-department.dto";
 
 class DepartmentController {
+    private logger=LoggerService.getInstance(DepartmentController.name)
     constructor(
         private departmentServices: DepartmentServices,
         private router: Router
@@ -38,7 +39,7 @@ class DepartmentController {
                 );
             res.status(201).send(newDepartment);
         } catch (err) {
-            console.log(err);
+            this.logger.error(err);
             next(err);
         }
     }
