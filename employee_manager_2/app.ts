@@ -4,35 +4,41 @@ import loggerMiddleware from "./middlewares/loggerMiddleware";
 import dataSource from "./db/data-source";
 import processTimeMiddleware from "./middlewares/processTimeMiddleware";
 import errorMiddleware from "./middlewares/errorMiddleware";
+import authRouter from "./routes/auth.routes";
+import authMiddleware from "./middlewares/authMiddleware";
+import { LoggerService } from "./services/logger.service";
 
 const { Client } = require("pg");
 
 const server = express();
+const logger = LoggerService.getInstance("app()");
+
 server.use(express.json());
 server.use(loggerMiddleware);
-server.use(processTimeMiddleware)
+server.use(processTimeMiddleware);
 
-server.use("/employee", employeeRouter);
+server.use("/auth", authRouter);
+server.use("/employee", authMiddleware, employeeRouter);
 
 server.use(errorMiddleware);
 
 server.get("/", (req, res) => {
-  console.log(req.url);
-  res.status(200).send("Hello world typescript");
+    console.log(req.url);
+    res.status(200).send("Hello world typescript");
 });
 
 (async () => {
-  try {
-    await dataSource.initialize();
-    console.log("connected");
-  } catch (e){
-    console.error("Failed to connect to DB", e);
-    process.exit(1);
-  }
+    try {
+        await dataSource.initialize();
+        logger.info("connected");
 
-  server.listen(3000, () => {
-    console.log("server listening to 3000");
-  });
+        server.listen(3000, () => {
+            logger.info("server listening to 3000");
+        });
+    } catch (e) {
+        logger.error(`Failed to connect to DB:  ${e}`);
+        process.exit(1);
+    }
 })();
 
 /* // Database connection configuration
