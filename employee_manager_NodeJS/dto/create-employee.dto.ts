@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsNumber, isString, IsString, ValidateNested, IsEnum, MinLength , IsDate, IsDateString} from "class-validator";
+import { IsEmail, IsNotEmpty, IsNumber, isString, IsString, ValidateNested, IsEnum, MinLength , IsDate, IsDateString, IsOptional} from "class-validator";
 import { Type } from "class-transformer";
 import { CreateAddressDto } from "./create-address.dto";
 import { EmployeeRole, EmployeeStatus } from "../entities/employee.entity";
@@ -37,8 +37,9 @@ export class CreateEmployeeDto {
   @IsNumber()
   experience: number;
 
+  @IsOptional()
   @IsDateString()
-  dateOfJoining: Date;
+  dateOfJoining: string;
  
 
 }
