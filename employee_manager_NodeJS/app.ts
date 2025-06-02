@@ -8,6 +8,7 @@ import authRouter from "./routes/auth.routes";
 import authMiddleware from "./middlewares/authMiddleware";
 import { LoggerService } from "./services/logger.service";
 import departmentRouter from "./routes/department.routes";
+import cors from "cors"
 
 const { Client } = require("pg");
 
@@ -18,6 +19,7 @@ server.use(express.json());
 server.use(loggerMiddleware);
 server.use(processTimeMiddleware);
 
+server.use( cors() )
 server.use("/auth", authRouter);
 server.use("/department", departmentRouter);
 server.use("/employee", authMiddleware, employeeRouter);

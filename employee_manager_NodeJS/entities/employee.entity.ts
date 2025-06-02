@@ -66,6 +66,9 @@ class Employee extends AbstractEntity {
         default: EmployeeStatus.ACTIVE,
     })
     status: EmployeeStatus;
+
+    @Column()
+    employeeId:string;
 }
 
 export default Employee;
